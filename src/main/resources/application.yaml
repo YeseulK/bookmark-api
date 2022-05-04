@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: bookmark-api
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://db.prrtprrt.com:3306/memodb?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&zeroDateTimeBehavior=convertToNull
+    username: memouser
+    password: 12341234
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
+    show-sql: true
+    generate-ddl: true
+    database: mysql
+    defer-datasource-initialization: true
