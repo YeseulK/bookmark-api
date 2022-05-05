@@ -6,13 +6,15 @@ import javax.persistence.*
 
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class Bookmark(
+data class Folder(
     @Id
     @GeneratedValue
     var id: Long? = null,
 
-    var url: String,
-    var title: String,
-    var order: Int? = null,
-    var createdAt: LocalDateTime? = null
+    var title: String? = null,
+    var createdAt: LocalDateTime = LocalDateTime.now(),
+
+    @OneToMany
+    var bookmark: List<Bookmark>
+
 )
