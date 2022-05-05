@@ -15,11 +15,7 @@ data class Folder(
     var title: String? = null,
     var createdAt: LocalDateTime = LocalDateTime.now(),
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "folder_id")
     var bookmarks: MutableList<Bookmark> = arrayListOf()
-) {
-    fun addBookmark(bookmark: Bookmark) {
-        bookmarks.add(bookmark)
-    }
-}
-
+)
