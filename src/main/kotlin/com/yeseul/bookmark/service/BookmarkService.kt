@@ -2,6 +2,7 @@ package com.yeseul.bookmark.service
 
 import com.yeseul.bookmark.controller.dto.BookmarkDto
 import com.yeseul.bookmark.domain.Bookmark
+import com.yeseul.bookmark.domain.Folder
 import com.yeseul.bookmark.repository.BookmarkRepository
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
@@ -9,7 +10,8 @@ import org.springframework.stereotype.Service
 @Service
 class BookmarkService(
     val bookmarkRepository: BookmarkRepository,
-    val mapper: ModelMapper,
+    val folderService: FolderService,
+    val mapper: ModelMapper
 ) {
 
     fun findBookmarks(): List<Bookmark> {
@@ -23,6 +25,8 @@ class BookmarkService(
     fun createBookmark(dto: BookmarkDto): Bookmark {
         val entity = mapper.map(dto, Bookmark::class.java)
         return bookmarkRepository.save(entity)
+//        val folder: Folder = folderService.findFolder(entity.folderId)
+//        folder.addBookmark(entity)
     }
 
     fun updateBookmark(id: Long, dto: BookmarkDto) {
