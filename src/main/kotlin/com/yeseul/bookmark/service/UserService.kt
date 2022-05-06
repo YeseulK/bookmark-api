@@ -20,9 +20,14 @@ class UserService(
         return userRepository.findById(id).orElse(null)
     }
 
-//    fun findUserByEmailAndPassword(email: String, password: String): User {
-//
-//    }
+    fun findUserByEmailAndPassword(email: String, password: String): User? {
+        userRepository.findByEmail(email)?.let {
+            if (it.password == password) {
+                return it
+            }
+        }
+        return null
+    }
 
     fun joinUser(dto: UserDto): User {
         validateDuplicateUser(dto.email)
