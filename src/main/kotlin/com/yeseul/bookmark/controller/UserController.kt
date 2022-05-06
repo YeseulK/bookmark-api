@@ -21,6 +21,7 @@ class UserController(
         return userService.findUserById(id)
     }
 
+    // TODO: jwt token
     @GetMapping("/login") // ?email=jess@gmail.com&password=1234
     fun getUserByEmailAndPassword(
         @RequestParam email: String,
