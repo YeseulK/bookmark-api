@@ -17,5 +17,8 @@ data class Folder(
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "folder_id")
-    var bookmarks: MutableList<Bookmark> = arrayListOf()
+    var bookmarks: MutableList<Bookmark> = arrayListOf(),
+
+    @Column(name = "user_id")
+    var userId: Long? = null
 )
