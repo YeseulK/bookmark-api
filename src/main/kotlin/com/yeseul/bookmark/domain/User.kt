@@ -13,9 +13,5 @@ data class User(
     @Column(name = "email", nullable = false, unique = true)
     var email: String,
 
-    var password: String,
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    var folders: MutableList<Folder> = arrayListOf()
+    var password: String
 )

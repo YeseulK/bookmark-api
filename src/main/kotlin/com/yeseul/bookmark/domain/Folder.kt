@@ -1,5 +1,6 @@
 package com.yeseul.bookmark.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -14,10 +15,7 @@ data class Folder(
     var name: String? = null,
     var createdAt: LocalDateTime = LocalDateTime.now(),
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "folder_id")
-    var bookmarks: MutableList<Bookmark> = arrayListOf(),
-
-    @Column(name = "user_id")
-    var userId: Long? = null
+    @JsonIgnore
+    @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY)
+    var bookmarks: MutableList<Bookmark> = arrayListOf()
 )

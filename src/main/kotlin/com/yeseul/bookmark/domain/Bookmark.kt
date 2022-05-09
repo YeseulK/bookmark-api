@@ -15,8 +15,9 @@ data class Bookmark(
     var memo: String,
     var createdAt: LocalDateTime? = LocalDateTime.now(),
 
-    @Column(name = "folder_id")
-    var folderId: Long
+    @ManyToOne
+    @JoinColumn(name = "folder_id")
+    var folder: Folder
 )
 
 
