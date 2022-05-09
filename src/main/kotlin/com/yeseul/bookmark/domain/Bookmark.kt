@@ -1,6 +1,5 @@
 package com.yeseul.bookmark.domain
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -13,8 +12,7 @@ data class Bookmark(
     var id: Long? = null,
 
     var url: String,
-    var title: String,
-//    var order: Int? = null,
+    var memo: String,
     var createdAt: LocalDateTime? = LocalDateTime.now(),
 
     @Column(name = "folder_id")

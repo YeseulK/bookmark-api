@@ -3,7 +3,6 @@ package com.yeseul.bookmark.domain
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 import javax.persistence.*
-import java.util.TreeSet
 
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -12,7 +11,7 @@ data class Folder(
     @GeneratedValue
     var id: Long? = null,
 
-    var title: String? = null,
+    var name: String? = null,
     var createdAt: LocalDateTime = LocalDateTime.now(),
 
     @OneToMany(fetch = FetchType.LAZY)
