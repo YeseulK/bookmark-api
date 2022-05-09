@@ -1,5 +1,6 @@
 package com.yeseul.bookmark.domain
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -17,6 +18,7 @@ data class Bookmark(
 
     @ManyToOne
     @JoinColumn(name = "folder_id")
+    @JsonBackReference
     var folder: Folder
 )
 
