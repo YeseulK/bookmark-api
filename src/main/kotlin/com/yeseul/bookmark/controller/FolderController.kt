@@ -1,8 +1,12 @@
 package com.yeseul.bookmark.controller
 
 import com.yeseul.bookmark.controller.dto.FolderDto
+import com.yeseul.bookmark.domain.Bookmark
 import com.yeseul.bookmark.domain.Folder
+import com.yeseul.bookmark.response.ApiPageMeta
+import com.yeseul.bookmark.response.ApiResponse
 import com.yeseul.bookmark.service.FolderService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -12,13 +16,15 @@ class FolderController(
 ) {
 
     @GetMapping
-    fun getFolders(): List<Folder> {
-        return folderService.findFolders()
+    fun getFolders(): ResponseEntity<ApiResponse<List<Folder>>> {
+        val result = folderService.findFolders()
+        val response = ApiResponse(result, ApiPageMeta(total = result.count()))
+        return ResponseEntity.ok(response)
     }
 
     @GetMapping("/{id}")
-    fun getFolder(@PathVariable id: Long): Folder {
-        return folderService.findFolder(id)
+    fun getFolder(@PathVariable id: Long):  ResponseEntity<ApiResponse<Folder>> {
+        return ResponseEntity.ok(ApiResponse(folderService.findFolder(id)))
     }
 
     @PostMapping

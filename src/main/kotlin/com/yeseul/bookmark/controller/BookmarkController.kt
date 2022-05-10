@@ -2,7 +2,10 @@ package com.yeseul.bookmark.controller
 
 import com.yeseul.bookmark.controller.dto.BookmarkDto
 import com.yeseul.bookmark.domain.Bookmark
+import com.yeseul.bookmark.response.ApiPageMeta
+import com.yeseul.bookmark.response.ApiResponse
 import com.yeseul.bookmark.service.BookmarkService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -12,13 +15,15 @@ class BookmarkController(
 ) {
 
     @GetMapping
-    fun getBookmarks(): List<Bookmark> {
-        return bookmarkService.findBookmarks()
+    fun getBookmarks(): ResponseEntity<ApiResponse<List<Bookmark>>> {
+        val result = bookmarkService.findBookmarks()
+        val response = ApiResponse(result, ApiPageMeta(total = result.count()))
+        return ResponseEntity.ok(response)
     }
 
     @GetMapping("/{id}")
-    fun getBookmark(@PathVariable id: Long): Bookmark {
-        return bookmarkService.findBookmark(id)
+    fun getBookmark(@PathVariable id: Long): ResponseEntity<ApiResponse<Bookmark>> {
+        return ResponseEntity.ok(ApiResponse(bookmarkService.findBookmark(id)))
     }
 
     @PostMapping
@@ -36,3 +41,5 @@ class BookmarkController(
         bookmarkService.deleteBookmark(id)
     }
 }
+
+
