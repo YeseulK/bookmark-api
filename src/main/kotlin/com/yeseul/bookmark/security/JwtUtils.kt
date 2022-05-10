@@ -1,5 +1,6 @@
 package com.yeseul.bookmark.security
 
+import com.yeseul.bookmark.service.ExternalService
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -10,10 +11,13 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class JwtUtils(private val userDetailsService: UserDetailsServiceImpl) {
+class JwtUtils(
+    private val userDetailsService: UserDetailsServiceImpl,
+    private val externalService: ExternalService
+) {
 
-    val expireTime: Long = 1000L * 60 * 3
-    val secretKey: String = "eyJhbGciOiJIUzI1NiJ9eyJzdWIiOiJKb2UifQ1KP0SsvENi7Uz1oQc07aXTL7kpQG5jBNIybqr60AlD4"
+    val expireTime: Long? = externalService.expireTime
+    val secretKey: String? = externalService.secretKey
     val signatureAlgorithm: SignatureAlgorithm = SignatureAlgorithm.HS256
 
     // 토큰생성
@@ -23,7 +27,7 @@ class JwtUtils(private val userDetailsService: UserDetailsServiceImpl) {
 
         return Jwts.builder()
             .setClaims(claims)
-            .setExpiration(Date(System.currentTimeMillis() + expireTime))
+            .setExpiration(Date(System.currentTimeMillis() + expireTime!!))
             .signWith(signatureAlgorithm, secretKey)
             .compact()
     }
