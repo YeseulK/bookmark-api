@@ -1,6 +1,7 @@
 package com.yeseul.bookmark.controller
 
 import com.yeseul.bookmark.controller.dto.BookmarkDto
+import com.yeseul.bookmark.controller.dto.MemberDto
 import com.yeseul.bookmark.domain.Bookmark
 import com.yeseul.bookmark.response.ApiPageMeta
 import com.yeseul.bookmark.response.ApiResponse
@@ -32,8 +33,10 @@ class BookmarkController(
         bookmarkService.createBookmark(body)
     }
 
-    @PatchMapping("/{id}") // TODO:
-    fun updateBookmarkTitle(@PathVariable id: Long, @RequestBody body: BookmarkDto) {
+    @PutMapping("/{id}")
+    fun putBookmark(
+        @PathVariable id: Long,
+        @RequestBody body: BookmarkDto) {
         bookmarkService.updateBookmark(id, body)
     }
 

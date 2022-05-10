@@ -2,8 +2,10 @@ package com.yeseul.bookmark.service
 
 import com.yeseul.bookmark.controller.dto.BookmarkDto
 import com.yeseul.bookmark.domain.Bookmark
+import com.yeseul.bookmark.domain.Member
 import com.yeseul.bookmark.repository.BookmarkRepository
 import org.modelmapper.ModelMapper
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -26,8 +28,9 @@ class BookmarkService(
     }
 
     fun updateBookmark(id: Long, dto: BookmarkDto) {
-        val bookmark = bookmarkRepository.findById(id)
-
+        val bookmark: Bookmark = bookmarkRepository.findByIdOrNull(id)
+            ?: throw IllegalArgumentException("존재하지 않는 ID 입니다.")
+        // TODO:
     }
 
     fun deleteBookmark(id: Long) {
