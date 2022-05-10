@@ -28,5 +28,4 @@ class FolderService(
     fun deleteFolder(id: Long) {
         folderRepository.deleteById(id)
     }
-
 }

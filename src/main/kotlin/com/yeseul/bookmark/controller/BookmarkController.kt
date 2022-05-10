@@ -14,6 +14,7 @@ class BookmarkController(
     private val bookmarkService: BookmarkService
 ) {
 
+    // TODO: paging 처리
     @GetMapping
     fun getBookmarks(): ResponseEntity<ApiResponse<List<Bookmark>>> {
         val result = bookmarkService.findBookmarks()
@@ -31,7 +32,7 @@ class BookmarkController(
         bookmarkService.createBookmark(body)
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}") // TODO:
     fun updateBookmarkTitle(@PathVariable id: Long, @RequestBody body: BookmarkDto) {
         bookmarkService.updateBookmark(id, body)
     }
