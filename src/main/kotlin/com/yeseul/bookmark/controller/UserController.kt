@@ -1,8 +1,12 @@
 package com.yeseul.bookmark.controller
 
 import com.yeseul.bookmark.controller.dto.UserDto
+import com.yeseul.bookmark.domain.Bookmark
 import com.yeseul.bookmark.domain.User
+import com.yeseul.bookmark.response.ApiPageMeta
+import com.yeseul.bookmark.response.ApiResponse
 import com.yeseul.bookmark.service.UserService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -12,13 +16,15 @@ class UserController(
 ) {
 
     @GetMapping
-    fun getUsers(): List<User> {
-        return userService.findUsers()
+    fun getUsers(): ResponseEntity<ApiResponse<List<User>>> {
+        val result = userService.findUsers()
+        val response = ApiResponse(result, ApiPageMeta(total = result.count()))
+        return ResponseEntity.ok(response)
     }
 
     @GetMapping("/{id}")
-    fun getUser(@PathVariable id: Long): User {
-        return userService.findUserById(id)
+    fun getUser(@PathVariable id: Long): ResponseEntity<ApiResponse<User>> {
+        return ResponseEntity.ok(ApiResponse(userService.findUserById(id)))
     }
 
     // TODO: jwt token
