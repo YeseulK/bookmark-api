@@ -31,6 +31,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.hibernate:hibernate-spatial:5.4.4.Final")
+    implementation("org.hibernate.validator:hibernate-validator:6.1.2.Final")
+    implementation("org.glassfish:jakarta.el:3.0.3")
     implementation("org.modelmapper:modelmapper:3.1.0")
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
