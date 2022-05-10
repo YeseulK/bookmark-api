@@ -13,7 +13,7 @@ import java.util.*
 class JwtUtils(private val userDetailsService: UserDetailsServiceImpl) {
 
     val EXP_TIME: Long = 1000L * 60 * 3
-    val JWT_SECRET: String = "secret"
+    val JWT_SECRET: String = "eyJhbGciOiJIUzI1NiJ9eyJzdWIiOiJKb2UifQ1KP0SsvENi7Uz1oQc07aXTL7kpQG5jBNIybqr60AlD4"
     val SIGNATURE_ALG: SignatureAlgorithm = SignatureAlgorithm.HS256
 
     // 토큰생성
