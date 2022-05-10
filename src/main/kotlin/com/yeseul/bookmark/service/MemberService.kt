@@ -49,10 +49,11 @@ class MemberService(
         return memberRepository.findById(id).orElse(null)
     }
 
-    fun updateMember(id: Long, body: MemberDto) {
-        val findMember: Member = memberRepository.findByIdOrNull(id)
+    fun updateMember(id: Long, dto: MemberDto) {
+        val member: Member = memberRepository.findByIdOrNull(id)
             ?: throw IllegalArgumentException("존재하지 않는 ID 입니다.")
-        findMember.updateMember(body)
+        member.updateMember(dto)
+        memberRepository.save(member)
     }
 
     fun deleteMember(id: Long) {
