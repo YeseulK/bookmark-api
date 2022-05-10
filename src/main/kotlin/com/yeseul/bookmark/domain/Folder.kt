@@ -15,7 +15,6 @@ data class Folder(
     var name: String? = null,
     var createdAt: LocalDateTime = LocalDateTime.now(),
 
-
     @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY)
     @JsonManagedReference
     var bookmarks: MutableList<Bookmark> = arrayListOf()
