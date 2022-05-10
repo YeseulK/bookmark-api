@@ -14,6 +14,11 @@ class MemberController(
     private val memberService: MemberService
 ) {
 
+    @PostMapping("/signup")
+    fun signup(@RequestBody memberDto: MemberDto): ResponseEntity<Unit> {
+        return ResponseEntity.status(201).body(memberService.signup(memberDto))
+    }
+
     @PostMapping("/login")
     fun login(@RequestBody memberDto: MemberDto): ResponseEntity<String> {
         return ResponseEntity.ok().body(memberService.login(memberDto))

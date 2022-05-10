@@ -6,6 +6,15 @@ import org.junit.jupiter.api.TestInstance
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.yeseul.bookmark.controller.dto.MemberDto
+import com.yeseul.bookmark.domain.Member
+import com.yeseul.bookmark.repository.MemberRepository
+import org.junit.jupiter.api.BeforeAll
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
+import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.test.web.servlet.*
 
 @Transactional
 @AutoConfigureMockMvc
@@ -13,9 +22,51 @@ import org.springframework.transaction.annotation.Transactional
 @TestInstance(TestInstance.Lifecycle.PER_CLASS) // BeforeAll
 class MemberControllerTest {
 
+    @Autowired lateinit var mockMvc: MockMvc
+    @Autowired lateinit var memberRepository: MemberRepository
+    @Autowired lateinit var objectMapper: ObjectMapper
+    @Autowired lateinit var passwordEncoder: PasswordEncoder
+    lateinit var testMember: Member
+
+    @BeforeAll
+    fun beforeAll() {
+        testMember = Member("test101", passwordEncoder.encode("test101"))
+        memberRepository.save(testMember)
+    }
+
+    @Test
+    @DisplayName("회원가입 테스트")
+    fun `회원가입` () {
+
+        val memberDto: MemberDto = MemberDto("saveUsername", "savePassword")
+        val memberDtoJson = objectMapper.writeValueAsString(memberDto)
+
+        mockMvc.post("/v1/members/signup")
+        {
+            contentType = MediaType.APPLICATION_JSON
+            content = memberDtoJson
+        }.andExpect {
+            status { isCreated() }
+        }.andDo { print() }
+    }
+
     @Test
     @DisplayName("로그인 테스트")
-    fun `jwt 토큰발급 테스트` () {
-        // TODO:
+    fun `로그인 테스트` () {
+
+        val signinDto: MemberDto = MemberDto("test101", "test101")
+        val signinDtoJson = objectMapper.writeValueAsString(signinDto)
+
+        mockMvc.post("/v1/members/login")
+        {
+            contentType = MediaType.APPLICATION_JSON
+            content = signinDtoJson
+        }
+            .andExpect {
+                status { isOk() }
+            }
+            .andDo {
+                print()
+            }
     }
 }

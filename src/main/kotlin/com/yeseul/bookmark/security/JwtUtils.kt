@@ -1,6 +1,5 @@
-package com.yeseul.bookmark.jwt
+package com.yeseul.bookmark.security
 
-import com.yeseul.bookmark.service.UserDetailsServiceImpl
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm

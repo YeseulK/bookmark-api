@@ -1,4 +1,4 @@
-package com.yeseul.bookmark.service
+package com.yeseul.bookmark.security
 
 //@Service
 //class UserDetailService(private val userRepository: UserRepository): UserDetailsService {

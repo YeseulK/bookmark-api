@@ -1,4 +1,4 @@
-package com.yeseul.bookmark.jwt
+package com.yeseul.bookmark.security
 
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder

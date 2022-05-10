@@ -1,6 +1,5 @@
-package com.yeseul.bookmark.jwt
+package com.yeseul.bookmark.security
 
-import com.yeseul.bookmark.service.UserDetailsServiceImpl
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager

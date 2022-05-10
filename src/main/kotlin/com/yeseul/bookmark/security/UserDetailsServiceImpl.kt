@@ -1,4 +1,4 @@
-package com.yeseul.bookmark.service
+package com.yeseul.bookmark.security
 
 import com.yeseul.bookmark.domain.Member
 import com.yeseul.bookmark.repository.MemberRepository
