@@ -29,12 +29,4 @@ class Member (
         this.username = memberDto.username
         this.password = memberDto.password
     }
-
-    fun updateUsername(username: String) {
-        this.username = username
-    }
-
-    fun updatePassword(password: String) {
-        this.password = password
-    }
 }
