@@ -12,47 +12,42 @@ import java.util.*
 @Component
 class JwtUtils(private val userDetailsService: UserDetailsServiceImpl) {
 
-    val EXP_TIME: Long = 1000L * 60 * 3
-    val JWT_SECRET: String = "eyJhbGciOiJIUzI1NiJ9eyJzdWIiOiJKb2UifQ1KP0SsvENi7Uz1oQc07aXTL7kpQG5jBNIybqr60AlD4"
-    val SIGNATURE_ALG: SignatureAlgorithm = SignatureAlgorithm.HS256
+    val expireTime: Long = 1000L * 60 * 3
+    val secretKey: String = "eyJhbGciOiJIUzI1NiJ9eyJzdWIiOiJKb2UifQ1KP0SsvENi7Uz1oQc07aXTL7kpQG5jBNIybqr60AlD4"
+    val signatureAlgorithm: SignatureAlgorithm = SignatureAlgorithm.HS256
 
     // 토큰생성
     fun createToken(username: String): String {
-        val claims: Claims = Jwts.claims();
+        val claims: Claims = Jwts.claims()
         claims["username"] = username
 
         return Jwts.builder()
             .setClaims(claims)
-            .setExpiration(Date(System.currentTimeMillis()+ EXP_TIME))
-            .signWith(SIGNATURE_ALG, JWT_SECRET)
+            .setExpiration(Date(System.currentTimeMillis() + expireTime))
+            .signWith(signatureAlgorithm, secretKey)
             .compact()
     }
 
     // 토큰검증
-    fun validation(token: String) : Boolean {
+    fun validation(token: String): Boolean {
         val claims: Claims = getAllClaims(token)
         val exp: Date = claims.expiration
         return exp.after(Date())
     }
 
-    // 토큰에서 username 파싱
     fun parseUsername(token: String): String {
         val claims: Claims = getAllClaims(token)
         return claims["username"] as String
     }
 
-    // username으로 Authentcation객체 생성
     fun getAuthentication(username: String): Authentication {
         val userDetails: UserDetails = userDetailsService.loadUserByUsername(username)
-
         return UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
     }
 
-
-    // 모든 Claims 조회
     private fun getAllClaims(token: String): Claims {
         return Jwts.parser()
-            .setSigningKey(JWT_SECRET)
+            .setSigningKey(secretKey)
             .parseClaimsJws(token)
             .body
     }

@@ -5,6 +5,7 @@ import com.yeseul.bookmark.domain.Member
 import com.yeseul.bookmark.security.JwtUtils
 import com.yeseul.bookmark.repository.MemberRepository
 import org.modelmapper.ModelMapper
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -23,9 +24,8 @@ class MemberService(
 
     @Transactional
     fun signup(dto: MemberDto) {
-        var memberDto = dto
-        memberDto.password = passwordEncoder.encode(dto.password)
-        val entity = mapper.map(memberDto, Member::class.java)
+        dto.password = passwordEncoder.encode(dto.password)
+        val entity = mapper.map(dto, Member::class.java)
         memberRepository.save(entity)
     }
 
@@ -39,10 +39,23 @@ class MemberService(
         } catch (e: BadCredentialsException) {
             throw BadCredentialsException("로그인 실패")
         }
-        // 예외가 발생하지 않았다면 인증에 성공한 것.
-        // 토큰 생성
-        val token = jwtUtils.createToken(dto.username)
+        return jwtUtils.createToken(dto.username)
+    }
 
-        return token
+    fun findMembers(): List<Member> {
+        return memberRepository.findAll().toList()
+    }
+    fun findMember(id: Long): Member {
+        return memberRepository.findById(id).orElse(null)
+    }
+
+    fun updateMember(id: Long, body: MemberDto) {
+        val findMember: Member = memberRepository.findByIdOrNull(id)
+            ?: throw IllegalArgumentException("존재하지 않는 ID 입니다.")
+        findMember.updateMember(body)
+    }
+
+    fun deleteMember(id: Long) {
+        memberRepository.deleteById(id)
     }
 }
