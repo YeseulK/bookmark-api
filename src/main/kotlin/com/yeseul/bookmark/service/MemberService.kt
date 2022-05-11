@@ -1,6 +1,7 @@
 package com.yeseul.bookmark.service
 
-import com.yeseul.bookmark.controller.dto.MemberDto
+import com.yeseul.bookmark.controller.dto.request.RequestMemberDto
+import com.yeseul.bookmark.controller.dto.response.MemberDto
 import com.yeseul.bookmark.domain.Member
 import com.yeseul.bookmark.security.JwtUtils
 import com.yeseul.bookmark.repository.MemberRepository
@@ -23,14 +24,14 @@ class MemberService(
 ) {
 
     @Transactional
-    fun signup(dto: MemberDto) {
+    fun signup(dto: RequestMemberDto) {
         dto.password = passwordEncoder.encode(dto.password)
         val entity = mapper.map(dto, Member::class.java)
         memberRepository.save(entity)
     }
 
     @Transactional(readOnly = true)
-    fun login(dto: MemberDto): String {
+    fun login(dto: RequestMemberDto): String {
         try {
             // 인증시도
             authenticationManager.authenticate(
@@ -42,17 +43,20 @@ class MemberService(
         return jwtUtils.createToken(dto.username)
     }
 
-    fun findMembers(): List<Member> {
-        return memberRepository.findAll().toList()
-    }
-    fun findMember(id: Long): Member {
-        return memberRepository.findById(id).orElse(null)
+    fun findMembers(): List<MemberDto> {
+        val entities = memberRepository.findAll().toList()
+        return entities.map { mapper.map(it, MemberDto::class.java) }
     }
 
-    fun updateMember(id: Long, dto: MemberDto) {
+    fun findMember(id: Long): MemberDto {
+        val entity = memberRepository.findById(id).orElse(null)
+        return mapper.map(entity, MemberDto::class.java)
+    }
+
+    fun updateMember(id: Long, dto: RequestMemberDto) {
         val member: Member = memberRepository.findByIdOrNull(id)
             ?: throw IllegalArgumentException("존재하지 않는 ID 입니다.")
-        member.updateMember(dto)
+        member.updateMember(dto.username, dto.password)
         memberRepository.save(member)
     }
 

@@ -1,8 +1,7 @@
 package com.yeseul.bookmark.controller
 
-import com.yeseul.bookmark.controller.dto.FolderDto
-import com.yeseul.bookmark.domain.Bookmark
-import com.yeseul.bookmark.domain.Folder
+import com.yeseul.bookmark.controller.dto.request.CreateFolderDto
+import com.yeseul.bookmark.controller.dto.response.FolderDto
 import com.yeseul.bookmark.response.ApiPageMeta
 import com.yeseul.bookmark.response.ApiResponse
 import com.yeseul.bookmark.service.FolderService
@@ -16,19 +15,19 @@ class FolderController(
 ) {
 
     @GetMapping
-    fun getFolders(): ResponseEntity<ApiResponse<List<Folder>>> {
+    fun getFolders(): ResponseEntity<ApiResponse<List<FolderDto>>> {
         val result = folderService.findFolders()
         val response = ApiResponse(result, ApiPageMeta(total = result.count()))
         return ResponseEntity.ok(response)
     }
 
     @GetMapping("/{id}")
-    fun getFolder(@PathVariable id: Long):  ResponseEntity<ApiResponse<Folder>> {
+    fun getFolder(@PathVariable id: Long):  ResponseEntity<ApiResponse<FolderDto>> {
         return ResponseEntity.ok(ApiResponse(folderService.findFolder(id)))
     }
 
     @PostMapping
-    fun postFolder(@RequestBody body: FolderDto) {
+    fun postFolder(@RequestBody body: CreateFolderDto) {
         folderService.createFolder(body)
     }
 

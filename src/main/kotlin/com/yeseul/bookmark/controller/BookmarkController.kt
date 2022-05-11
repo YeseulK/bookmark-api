@@ -1,8 +1,7 @@
 package com.yeseul.bookmark.controller
 
-import com.yeseul.bookmark.controller.dto.BookmarkDto
-import com.yeseul.bookmark.controller.dto.MemberDto
-import com.yeseul.bookmark.domain.Bookmark
+import com.yeseul.bookmark.controller.dto.request.CreateBookmarkDto
+import com.yeseul.bookmark.controller.dto.response.BookmarkDto
 import com.yeseul.bookmark.response.ApiPageMeta
 import com.yeseul.bookmark.response.ApiResponse
 import com.yeseul.bookmark.service.BookmarkService
@@ -17,27 +16,21 @@ class BookmarkController(
 
     // TODO: paging 처리
     @GetMapping
-    fun getBookmarks(): ResponseEntity<ApiResponse<List<Bookmark>>> {
+    fun getBookmarks(): ResponseEntity<ApiResponse<List<BookmarkDto>>> {
         val result = bookmarkService.findBookmarks()
         val response = ApiResponse(result, ApiPageMeta(total = result.count()))
         return ResponseEntity.ok(response)
     }
 
     @GetMapping("/{id}")
-    fun getBookmark(@PathVariable id: Long): ResponseEntity<ApiResponse<Bookmark>> {
-        return ResponseEntity.ok(ApiResponse(bookmarkService.findBookmark(id)))
+    fun getBookmark(@PathVariable id: Long): ResponseEntity<ApiResponse<BookmarkDto>> {
+        val result = bookmarkService.findBookmark(id)
+        return ResponseEntity.ok(ApiResponse(result))
     }
 
     @PostMapping
-    fun postBookmark(@RequestBody body: BookmarkDto) {
+    fun postBookmark(@RequestBody body: CreateBookmarkDto) {
         bookmarkService.createBookmark(body)
-    }
-
-    @PutMapping("/{id}")
-    fun putBookmark(
-        @PathVariable id: Long,
-        @RequestBody body: BookmarkDto) {
-        bookmarkService.updateBookmark(id, body)
     }
 
     @DeleteMapping("/{id}")

@@ -1,7 +1,7 @@
 package com.yeseul.bookmark.controller
 
-import com.yeseul.bookmark.controller.dto.MemberDto
-import com.yeseul.bookmark.domain.Member
+import com.yeseul.bookmark.controller.dto.request.RequestMemberDto
+import com.yeseul.bookmark.controller.dto.response.MemberDto
 import com.yeseul.bookmark.response.ApiPageMeta
 import com.yeseul.bookmark.response.ApiResponse
 import com.yeseul.bookmark.service.MemberService
@@ -15,30 +15,30 @@ class MemberController(
 ) {
 
     @PostMapping("/signup")
-    fun signup(@RequestBody memberDto: MemberDto): ResponseEntity<Unit> {
-        return ResponseEntity.status(201).body(memberService.signup(memberDto))
+    fun signup(@RequestBody body: RequestMemberDto): ResponseEntity<Unit> {
+        return ResponseEntity.status(201).body(memberService.signup(body))
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody memberDto: MemberDto): ResponseEntity<String> {
-        return ResponseEntity.ok().body(memberService.login(memberDto))
+    fun login(@RequestBody body: RequestMemberDto): ResponseEntity<String> {
+        return ResponseEntity.ok().body(memberService.login(body))
     }
 
     @GetMapping
-    fun getMembers(): ResponseEntity<ApiResponse<List<Member>>> {
+    fun getMembers(): ResponseEntity<ApiResponse<List<MemberDto>>> {
         val result = memberService.findMembers()
         val response = ApiResponse(result, ApiPageMeta(total = result.count()))
         return ResponseEntity.ok(response)
     }
     @GetMapping("/{id}")
-    fun getMember(@PathVariable id: Long): ResponseEntity<ApiResponse<Member>> {
+    fun getMember(@PathVariable id: Long): ResponseEntity<ApiResponse<MemberDto>> {
         return ResponseEntity.ok(ApiResponse(memberService.findMember(id)))
     }
 
     @PutMapping("/{id}")
     fun putMember(
         @PathVariable id: Long,
-        @RequestBody body: MemberDto) {
+        @RequestBody body: RequestMemberDto) {
         memberService.updateMember(id, body)
     }
 

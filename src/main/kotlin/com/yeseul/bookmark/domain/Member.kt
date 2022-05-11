@@ -1,7 +1,6 @@
 package com.yeseul.bookmark.domain
 
-import com.yeseul.bookmark.BaseTime
-import com.yeseul.bookmark.controller.dto.MemberDto
+import com.yeseul.bookmark.utils.BaseTime
 import javax.persistence.*
 
 @Entity
@@ -25,8 +24,8 @@ class Member (
 //    @OneToMany(mappedBy = "member")
 //    val folders: MutableList<Folder> = ArrayList()
 
-    fun updateMember(memberDto: MemberDto) {
-        this.username = memberDto.username
-        this.password = memberDto.password
+    fun updateMember(username: String, password: String) {
+        this.username = username
+        this.password = password
     }
 }

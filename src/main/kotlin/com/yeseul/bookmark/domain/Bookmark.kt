@@ -1,33 +1,23 @@
 package com.yeseul.bookmark.domain
 
-import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.yeseul.bookmark.BaseTime
-import com.yeseul.bookmark.controller.dto.BookmarkDto
-import com.yeseul.bookmark.controller.dto.MemberDto
-import org.hibernate.validator.constraints.Length
-import org.hibernate.validator.constraints.URL
+import com.yeseul.bookmark.utils.BaseTime
 import javax.persistence.*
-import javax.validation.constraints.NotBlank
 
 @Entity
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL) // TODO:
 data class Bookmark(
     @Id
     @GeneratedValue
     var id: Long? = null,
 
-    @field: URL
-    var url: String,
-
-    @field: NotBlank
-    @field: Length(max = 200)
-    var memo: String,
+    var url: String? = null,
+//    var memo: String, // TODO: memo entity 만들기 @OneToOne
 
     @ManyToOne
     @JoinColumn(name = "folder_id")
-    @JsonBackReference
     var folder: Folder
+
 ): BaseTime() {
 
 }
