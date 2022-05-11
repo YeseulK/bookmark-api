@@ -1,4 +1,4 @@
-package com.yeseul.bookmark.service
+package com.yeseul.bookmark.utils
 
 import org.springframework.stereotype.Service
 import org.springframework.beans.factory.annotation.Value

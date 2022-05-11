@@ -1,9 +1,9 @@
 package com.yeseul.bookmark.security
 
 import com.yeseul.bookmark.domain.Member
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.GrantedAuthority
 
 class UserDetailsImpl(val member: Member): UserDetails {
 

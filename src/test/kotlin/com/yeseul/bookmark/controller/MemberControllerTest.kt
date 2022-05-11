@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.yeseul.bookmark.controller.dto.MemberDto
+import com.yeseul.bookmark.controller.dto.response.MemberDto
 import com.yeseul.bookmark.domain.Member
 import com.yeseul.bookmark.repository.MemberRepository
 import org.junit.jupiter.api.BeforeAll

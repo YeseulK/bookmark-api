@@ -1,4 +1,4 @@
-package com.yeseul.bookmark
+package com.yeseul.bookmark.utils
 
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp

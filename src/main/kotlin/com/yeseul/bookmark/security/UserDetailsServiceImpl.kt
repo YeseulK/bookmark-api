@@ -2,7 +2,6 @@ package com.yeseul.bookmark.security
 
 import com.yeseul.bookmark.domain.Member
 import com.yeseul.bookmark.repository.MemberRepository
-import com.yeseul.bookmark.repository.UserDetailsImpl
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException

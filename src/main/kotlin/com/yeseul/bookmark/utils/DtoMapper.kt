@@ -1,4 +1,4 @@
-package com.yeseul.bookmark
+package com.yeseul.bookmark.utils
 
 import org.modelmapper.ModelMapper
 import org.modelmapper.config.Configuration
