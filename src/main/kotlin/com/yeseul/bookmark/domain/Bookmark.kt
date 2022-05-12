@@ -10,12 +10,13 @@ data class Bookmark(
     var id: Long? = null,
 
     var url: String? = null,
-//    var memo: String, // TODO: memo entity 만들기 @OneToOne
 
     @ManyToOne
     @JoinColumn(name = "folder_id")
-    var folder: Folder
+    var folder: Folder,
 
+    @OneToOne(mappedBy = "bookmark", fetch = FetchType.LAZY)
+    var memo: Memo
 ): BaseTime() {
 
 }
