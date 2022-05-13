@@ -14,6 +14,5 @@ data class Memo(
     @OneToOne
     @JoinColumn(name = "bookmark_id")
     var bookmark: Bookmark
-
 ): BaseTime() {
 }

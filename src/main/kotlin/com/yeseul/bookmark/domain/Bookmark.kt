@@ -16,7 +16,7 @@ data class Bookmark(
     var folder: Folder,
 
     @OneToOne(mappedBy = "bookmark", fetch = FetchType.LAZY)
-    var memo: Memo
+    var memo: Memo? = null
 ): BaseTime() {
 
 }
