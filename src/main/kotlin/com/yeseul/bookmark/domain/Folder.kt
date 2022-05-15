@@ -12,6 +12,10 @@ data class Folder(
     var name: String? = null,
 
     @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY)
-    var bookmarks: MutableList<Bookmark> = arrayListOf()
+    var bookmarks: MutableList<Bookmark> = arrayListOf(),
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    var member: Member
 
 ): BaseTime()

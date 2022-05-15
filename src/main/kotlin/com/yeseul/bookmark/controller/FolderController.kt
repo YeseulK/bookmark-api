@@ -7,6 +7,7 @@ import com.yeseul.bookmark.response.ApiResponse
 import com.yeseul.bookmark.service.FolderService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.servlet.http.HttpServletRequest
 
 @RestController
 @RequestMapping("/v1/folders")
@@ -16,11 +17,14 @@ class FolderController(
 
     @GetMapping
     fun getFolders(
+        request: HttpServletRequest,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") limit: Int,
     ): ResponseEntity<ApiResponse<List<FolderDto>>> {
-        val result = folderService.findFolders(page, limit)
-        val response = ApiResponse(result.data, ApiPageMeta(result.total, page, limit))
+        val username = request.getAttribute("username") as String
+        val result = folderService.findFolders(username, page, limit)
+//        val response = ApiResponse(result.data, ApiPageMeta(page, limit, result.total)) // TODO:
+        val response = ApiResponse(result)
         return ResponseEntity.ok(response)
     }
 
@@ -30,8 +34,12 @@ class FolderController(
     }
 
     @PostMapping
-    fun postFolder(@RequestBody body: CreateFolderDto) {
-        folderService.createFolder(body)
+    fun postFolder(
+        request: HttpServletRequest,
+        @RequestBody body: CreateFolderDto
+    ) {
+        val username = request.getAttribute("username") as String
+        folderService.createFolder(username, body)
     }
 
     @DeleteMapping("/{id}")

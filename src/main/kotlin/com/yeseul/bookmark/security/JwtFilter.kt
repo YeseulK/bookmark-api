@@ -18,17 +18,17 @@ class JwtFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val authorizationHeader: String? = request.getHeader("Authorization")
-            ?: return filterChain.doFilter(request, response)
-        val token = authorizationHeader?.substring("Bearer ".length)
-            ?: return filterChain.doFilter(request, response)
+        val authorizationHeader: String = request.getHeader("Authorization")
+        val token = authorizationHeader.substring("Bearer ".length)
 
         // 토큰 검증
         if (jwtUtils.validation(token)) {
             val username = jwtUtils.parseUsername(token)
             val authentication: Authentication = jwtUtils.getAuthentication(username)
+            request.setAttribute("username", username)
             SecurityContextHolder.getContext().authentication = authentication
         }
+
         filterChain.doFilter(request, response)
     }
 }

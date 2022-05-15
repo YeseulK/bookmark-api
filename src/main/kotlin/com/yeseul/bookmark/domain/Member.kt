@@ -8,7 +8,6 @@ class Member (
     username: String,
     password: String,
 ): BaseTime() {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
@@ -21,8 +20,8 @@ class Member (
     var password: String = password
         protected set
 
-//    @OneToMany(mappedBy = "member")
-//    val folders: MutableList<Folder> = ArrayList()
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    val folders: MutableList<Folder> = arrayListOf()
 
     fun updateMember(username: String, password: String) {
         this.username = username
