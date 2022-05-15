@@ -12,5 +12,8 @@ data class ApiResponse<T> @JvmOverloads constructor(
 }
 
 data class ApiPageMeta(
+    val page: Int,
+    val limit: Int,
     val total: Int
 )
+

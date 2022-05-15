@@ -5,7 +5,9 @@ import com.yeseul.bookmark.controller.dto.response.BookmarkDto
 import com.yeseul.bookmark.domain.Bookmark
 import com.yeseul.bookmark.domain.Folder
 import com.yeseul.bookmark.repository.BookmarkRepository
+import com.yeseul.bookmark.utils.DataWithTotal
 import org.modelmapper.ModelMapper
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
 @Service
@@ -14,9 +16,11 @@ class BookmarkService(
     val mapper: ModelMapper
 ) {
 
-    fun findBookmarks(): List<BookmarkDto> {
-        val entities = bookmarkRepository.findAll().toList()
-        return entities.map { mapper.map(it, BookmarkDto::class.java) }
+    fun findBookmarks(page: Int, limit: Int): DataWithTotal<List<BookmarkDto>> {
+        val entities = bookmarkRepository.findAll(PageRequest.of(page, limit))
+        val totalCount = entities.totalElements.toInt()
+        val data = entities.toList().map { mapper.map(it, BookmarkDto::class.java) }
+        return DataWithTotal(data, totalCount)
     }
 
     fun findBookmark(id: Long): BookmarkDto {

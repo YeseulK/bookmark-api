@@ -4,7 +4,9 @@ import com.yeseul.bookmark.controller.dto.request.CreateFolderDto
 import com.yeseul.bookmark.controller.dto.response.FolderDto
 import com.yeseul.bookmark.domain.Folder
 import com.yeseul.bookmark.repository.FolderRepository
+import com.yeseul.bookmark.utils.DataWithTotal
 import org.modelmapper.ModelMapper
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
 @Service
@@ -13,9 +15,11 @@ class FolderService(
     val mapper: ModelMapper,
 ) {
 
-    fun findFolders(): List<FolderDto> {
-        val entities = folderRepository.findAll().toList()
-        return entities.map { mapper.map(it, FolderDto::class.java) }
+    fun findFolders(page: Int, limit: Int): DataWithTotal<List<FolderDto>> {
+        val entities = folderRepository.findAll(PageRequest.of(page, limit))
+        val totalCount = entities.totalElements.toInt()
+        val data = entities.toList().map { mapper.map(it, FolderDto::class.java) }
+        return DataWithTotal(data, totalCount)
     }
 
     fun findFolder(id: Long): FolderDto {

@@ -2,7 +2,6 @@ package com.yeseul.bookmark.controller
 
 import com.yeseul.bookmark.controller.dto.request.RequestMemberDto
 import com.yeseul.bookmark.controller.dto.response.MemberDto
-import com.yeseul.bookmark.response.ApiPageMeta
 import com.yeseul.bookmark.response.ApiResponse
 import com.yeseul.bookmark.service.MemberService
 import org.springframework.http.ResponseEntity
@@ -27,7 +26,7 @@ class MemberController(
     @GetMapping
     fun getMembers(): ResponseEntity<ApiResponse<List<MemberDto>>> {
         val result = memberService.findMembers()
-        val response = ApiResponse(result, ApiPageMeta(total = result.count()))
+        val response = ApiResponse(result)
         return ResponseEntity.ok(response)
     }
     @GetMapping("/{id}")

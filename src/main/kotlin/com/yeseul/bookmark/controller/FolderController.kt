@@ -15,9 +15,12 @@ class FolderController(
 ) {
 
     @GetMapping
-    fun getFolders(): ResponseEntity<ApiResponse<List<FolderDto>>> {
-        val result = folderService.findFolders()
-        val response = ApiResponse(result, ApiPageMeta(total = result.count()))
+    fun getFolders(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "20") limit: Int,
+    ): ResponseEntity<ApiResponse<List<FolderDto>>> {
+        val result = folderService.findFolders(page, limit)
+        val response = ApiResponse(result.data, ApiPageMeta(result.total, page, limit))
         return ResponseEntity.ok(response)
     }
 

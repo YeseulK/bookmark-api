@@ -14,18 +14,19 @@ class BookmarkController(
     private val bookmarkService: BookmarkService
 ) {
 
-    // TODO: paging 처리
     @GetMapping
-    fun getBookmarks(): ResponseEntity<ApiResponse<List<BookmarkDto>>> {
-        val result = bookmarkService.findBookmarks()
-        val response = ApiResponse(result, ApiPageMeta(total = result.count()))
+    fun getBookmarks(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "20") limit: Int,
+    ): ResponseEntity<ApiResponse<List<BookmarkDto>>> {
+        val result = bookmarkService.findBookmarks(page, limit)
+        val response = ApiResponse(result.data, ApiPageMeta(result.total, page, limit))
         return ResponseEntity.ok(response)
     }
 
     @GetMapping("/{id}")
     fun getBookmark(@PathVariable id: Long): ResponseEntity<ApiResponse<BookmarkDto>> {
-        val result = bookmarkService.findBookmark(id)
-        return ResponseEntity.ok(ApiResponse(result))
+        return ResponseEntity.ok(ApiResponse(bookmarkService.findBookmark(id)))
     }
 
     @PostMapping
