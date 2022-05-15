@@ -13,11 +13,6 @@ class MemoService(
     val mapper: ModelMapper
 ) {
 
-    fun findMemos(): List<MemoDto> {
-        val entities = memoRepository.findAll().toList()
-        return entities.map { mapper.map(it, MemoDto::class.java) }
-    }
-
     fun findMemo(id: Long): MemoDto {
         val entity = memoRepository.findById(id).orElse(null)
         return mapper.map(entity, MemoDto::class.java)
