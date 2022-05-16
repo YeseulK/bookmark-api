@@ -11,7 +11,7 @@ data class Memo(
 
     var text: String? = null,
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bookmark_id")
     var bookmark: Bookmark
 ): BaseTime() {
