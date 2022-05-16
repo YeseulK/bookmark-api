@@ -6,7 +6,7 @@ import com.yeseul.bookmark.domain.Memo
 import com.yeseul.bookmark.repository.MemoRepository
 import com.yeseul.bookmark.utils.DataWithTotal
 import org.modelmapper.ModelMapper
-import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,8 +15,8 @@ class MemoService(
     val mapper: ModelMapper
 ) {
 
-    fun findMemos(page: Int, limit: Int): DataWithTotal<List<MemoDto>> {
-        val entities = memoRepository.findAll(PageRequest.of(page, limit))
+    fun findMemos(pageable: Pageable): DataWithTotal<List<MemoDto>> {
+        val entities = memoRepository.findAll(pageable)
         val totalCount = entities.totalElements.toInt()
         val data = entities.toList().map { mapper.map(it, MemoDto::class.java) }
         return DataWithTotal(data, totalCount)

@@ -21,7 +21,7 @@ class BookmarkController(
     @GetMapping
     fun getBookmarks(
         @PathVariable folderId: String,
-        @PageableDefault(page=0, size=20, sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable
+        @PageableDefault(page = 0, size = 20, sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable
     ): ResponseEntity<ApiResponse<List<BookmarkDto>>> {
         val result = bookmarkService.findBookmarks(folderId.toLong(), pageable)
         val response = ApiResponse(result.data, ApiPageMeta(pageable.pageNumber, pageable.pageSize, result.total))

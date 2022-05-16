@@ -5,6 +5,9 @@ import com.yeseul.bookmark.controller.dto.response.MemoDto
 import com.yeseul.bookmark.response.ApiPageMeta
 import com.yeseul.bookmark.response.ApiResponse
 import com.yeseul.bookmark.service.MemoService
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -16,11 +19,10 @@ class MemoController(
 
     @GetMapping
     fun getMemos(
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "20") limit: Int
+        @PageableDefault(page = 0, size = 20, sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable
     ): ResponseEntity<ApiResponse<List<MemoDto>>> {
-        val result = memoService.findMemos(page, limit)
-        val response = ApiResponse(result.data, ApiPageMeta(page, limit, result.total))
+        val result = memoService.findMemos(pageable)
+        val response = ApiResponse(result.data, ApiPageMeta(pageable.pageNumber, pageable.pageSize, result.total))
         return ResponseEntity.ok(response)
     }
 
