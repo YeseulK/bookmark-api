@@ -27,7 +27,6 @@ class JwtFilter(
         if (jwtUtils.validation(token)) {
             val username = jwtUtils.parseUsername(token)
             val authentication: Authentication = jwtUtils.getAuthentication(username)
-            request.setAttribute("username", username) // TODO: x
             SecurityContextHolder.getContext().authentication = authentication
         }
 

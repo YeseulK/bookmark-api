@@ -4,8 +4,10 @@ import com.yeseul.bookmark.controller.dto.request.CreateFolderDto
 import com.yeseul.bookmark.controller.dto.response.FolderAndBookmarksDto
 import com.yeseul.bookmark.controller.dto.response.FolderDto
 import com.yeseul.bookmark.response.ApiResponse
+import com.yeseul.bookmark.security.UserDetailsImpl
 import com.yeseul.bookmark.service.FolderService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 
@@ -17,10 +19,9 @@ class FolderController(
 
     @GetMapping
     fun getFolders(
-        request: HttpServletRequest
+        @AuthenticationPrincipal userDetailsImpl: UserDetailsImpl
     ): ResponseEntity<ApiResponse<List<FolderDto>>> {
-        val username = request.getAttribute("username") as String // TODO: 바꾸기
-        val result = folderService.findFolders(username)
+        val result = folderService.findFolders(userDetailsImpl.username)
         val response = ApiResponse(result)
         return ResponseEntity.ok(response)
     }
