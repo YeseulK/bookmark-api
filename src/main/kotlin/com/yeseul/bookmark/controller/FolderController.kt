@@ -1,8 +1,8 @@
 package com.yeseul.bookmark.controller
 
 import com.yeseul.bookmark.controller.dto.request.CreateFolderDto
+import com.yeseul.bookmark.controller.dto.response.FolderAndBookmarksDto
 import com.yeseul.bookmark.controller.dto.response.FolderDto
-import com.yeseul.bookmark.response.ApiPageMeta
 import com.yeseul.bookmark.response.ApiResponse
 import com.yeseul.bookmark.service.FolderService
 import org.springframework.http.ResponseEntity
@@ -17,19 +17,16 @@ class FolderController(
 
     @GetMapping
     fun getFolders(
-        request: HttpServletRequest,
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "20") limit: Int,
+        request: HttpServletRequest
     ): ResponseEntity<ApiResponse<List<FolderDto>>> {
-        val username = request.getAttribute("username") as String
-        val result = folderService.findFolders(username, page, limit)
-//        val response = ApiResponse(result.data, ApiPageMeta(page, limit, result.total)) // TODO:
+        val username = request.getAttribute("username") as String // TODO: 바꾸기
+        val result = folderService.findFolders(username)
         val response = ApiResponse(result)
         return ResponseEntity.ok(response)
     }
 
     @GetMapping("/{id}")
-    fun getFolder(@PathVariable id: Long):  ResponseEntity<ApiResponse<FolderDto>> {
+    fun getFolder(@PathVariable id: Long):  ResponseEntity<ApiResponse<FolderAndBookmarksDto>> {
         return ResponseEntity.ok(ApiResponse(folderService.findFolder(id)))
     }
 

@@ -15,7 +15,7 @@ data class Bookmark(
     @JoinColumn(name = "folder_id")
     var folder: Folder,
 
-    @OneToOne(mappedBy = "bookmark", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "bookmark")
     var memo: Memo? = null
 ): BaseTime() {
 
