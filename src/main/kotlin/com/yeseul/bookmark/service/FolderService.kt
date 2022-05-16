@@ -1,6 +1,7 @@
 package com.yeseul.bookmark.service
 
 import com.yeseul.bookmark.controller.dto.request.CreateFolderDto
+import com.yeseul.bookmark.controller.dto.response.FolderAndBookmarksDto
 import com.yeseul.bookmark.controller.dto.response.FolderDto
 import com.yeseul.bookmark.domain.Folder
 import com.yeseul.bookmark.repository.FolderRepository
@@ -15,23 +16,15 @@ class FolderService(
     val mapper: ModelMapper,
 ) {
 
-    /* TODO:
-    fun findFolders(page: Int, limit: Int): DataWithTotal<List<FolderDto>> {
-        val entities = folderRepository.findAll(PageRequest.of(page, limit))
-        val totalCount = entities.totalElements.toInt()
-        val data = entities.toList().map { mapper.map(it, FolderDto::class.java) }
-        return DataWithTotal(data, totalCount)
-    }*/
-
-    fun findFolders(username: String, page: Int, limit: Int): List<FolderDto> {
+    fun findFolders(username: String): List<FolderDto> {
         val member = memberRepository.findByUsername(username)
         val entities = member.folders
         return entities.toList().map { mapper.map(it, FolderDto::class.java) }
     }
 
-    fun findFolder(id: Long): FolderDto {
+    fun findFolder(id: Long): FolderAndBookmarksDto {
         val entity = folderRepository.findById(id).orElse(null)
-        return mapper.map(entity, FolderDto::class.java)
+        return mapper.map(entity, FolderAndBookmarksDto::class.java)
     }
 
     fun createFolder(username: String, dto: CreateFolderDto) {
