@@ -1,6 +1,7 @@
 package com.yeseul.bookmark.service
 
 import com.yeseul.bookmark.controller.dto.request.CreateMemoDto
+import com.yeseul.bookmark.controller.dto.request.EditMemoDto
 import com.yeseul.bookmark.controller.dto.response.MemoDto
 import com.yeseul.bookmark.domain.Memo
 import com.yeseul.bookmark.repository.MemoRepository
@@ -30,6 +31,13 @@ class MemoService(
     fun createMemo(dto: CreateMemoDto) {
         val entity = mapper.map(dto, Memo::class.java)
         memoRepository.save(entity)
+    }
+
+    fun editMemo(id: Long, dto: EditMemoDto): MemoDto {
+        val entity = memoRepository.findById(id).orElse(null)
+        entity.text = dto.text
+        val changed = memoRepository.save(entity)
+        return mapper.map(changed, MemoDto::class.java)
     }
 
     fun deleteMemo(id: Long) {

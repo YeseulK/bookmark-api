@@ -1,6 +1,7 @@
 package com.yeseul.bookmark.controller
 
 import com.yeseul.bookmark.controller.dto.request.CreateMemoDto
+import com.yeseul.bookmark.controller.dto.request.EditMemoDto
 import com.yeseul.bookmark.controller.dto.response.MemoDto
 import com.yeseul.bookmark.response.ApiPageMeta
 import com.yeseul.bookmark.response.ApiResponse
@@ -35,6 +36,15 @@ class MemoController(
     @PostMapping
     fun postMemo(@RequestBody body: CreateMemoDto): ResponseEntity<Unit> {
         return ResponseEntity.status(HttpStatus.CREATED).body(memoService.createMemo(body))
+    }
+
+    @PatchMapping("/{id}")
+    fun patchMemo(
+        @PathVariable id: Long,
+        @RequestBody body: EditMemoDto
+    ): ResponseEntity<ApiResponse<MemoDto>> {
+        val result = memoService.editMemo(id, body)
+        return ResponseEntity.ok(ApiResponse(result))
     }
 
     @DeleteMapping("/{id}")
