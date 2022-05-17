@@ -1,6 +1,7 @@
 package com.yeseul.bookmark.controller
 
 import com.yeseul.bookmark.controller.dto.request.CreateFolderDto
+import com.yeseul.bookmark.controller.dto.request.EditFolderNameDto
 import com.yeseul.bookmark.controller.dto.response.FolderAndBookmarksDto
 import com.yeseul.bookmark.controller.dto.response.FolderDto
 import com.yeseul.bookmark.response.ApiResponse
@@ -38,6 +39,15 @@ class FolderController(
         val userId = userDetailsImpl.getMemberId()
         val result = folderService.createFolder(userId, body)
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse(result))
+    }
+
+    @PatchMapping("/{id}")
+    fun patchFolder(
+        @PathVariable id: Long,
+        @RequestBody body: EditFolderNameDto
+    ): ResponseEntity<ApiResponse<FolderDto>> {
+        val result = folderService.editFolderName(id, body)
+        return ResponseEntity.ok(ApiResponse(result))
     }
 
     @DeleteMapping("/{id}")
