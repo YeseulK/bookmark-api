@@ -34,13 +34,14 @@ class BookmarkService(
         return mapper.map(entity, BookmarkDto::class.java)
     }
 
-    fun createBookmark(username: String, folderId: Long, dto: CreateBookmarkDto) {
-        val member = memberRepository.findByUsername(username)
+    fun createBookmark(userId: Long, folderId: Long, dto: CreateBookmarkDto): BookmarkDto {
+        val member = memberRepository.findById(userId)
         val entity = Bookmark(
             url = dto.url,
-            folder = Folder(id = folderId, member = member)
+            folder = Folder(id = folderId, member = member.get())
         )
-        bookmarkRepository.save(entity)
+        val created = bookmarkRepository.save(entity)
+        return mapper.map(created, BookmarkDto::class.java)
     }
 
     fun deleteBookmark(id: Long) {

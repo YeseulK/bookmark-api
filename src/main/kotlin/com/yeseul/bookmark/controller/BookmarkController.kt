@@ -4,13 +4,15 @@ import com.yeseul.bookmark.controller.dto.request.CreateBookmarkDto
 import com.yeseul.bookmark.controller.dto.response.BookmarkDto
 import com.yeseul.bookmark.response.ApiPageMeta
 import com.yeseul.bookmark.response.ApiResponse
+import com.yeseul.bookmark.security.UserDetailsImpl
 import com.yeseul.bookmark.service.BookmarkService
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
-import javax.servlet.http.HttpServletRequest
 
 @RestController
 @RequestMapping("/v1/folders/{folderId}/bookmarks")
@@ -21,7 +23,7 @@ class BookmarkController(
     @GetMapping
     fun getBookmarks(
         @PathVariable folderId: String,
-        @PageableDefault(page = 0, size = 20, sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable
+        @PageableDefault(page = 0, size = 20, sort = ["id"], direction = Sort.Direction.ASC) pageable: Pageable
     ): ResponseEntity<ApiResponse<List<BookmarkDto>>> {
         val result = bookmarkService.findBookmarks(folderId.toLong(), pageable)
         val response = ApiResponse(result.data, ApiPageMeta(pageable.pageNumber, pageable.pageSize, result.total))
@@ -38,18 +40,22 @@ class BookmarkController(
 
     @PostMapping
     fun postBookmark(
-        request: HttpServletRequest,
+        @AuthenticationPrincipal userDetailsImpl: UserDetailsImpl,
         @PathVariable folderId: String,
-        @RequestBody body: CreateBookmarkDto) {
-        val username = request.getAttribute("username") as String
-        bookmarkService.createBookmark(username, folderId.toLong(), body)
+        @RequestBody body: CreateBookmarkDto
+    ): ResponseEntity<ApiResponse<BookmarkDto>> {
+        val userId = userDetailsImpl.getMemberId()
+        val result = bookmarkService.createBookmark(userId, folderId.toLong(), body)
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse(result))
     }
 
     @DeleteMapping("/{id}")
     fun deleteBookmark(
         @PathVariable folderId: String,
-        @PathVariable id: Long) {
+        @PathVariable id: Long
+    ): ResponseEntity<Any> {
         bookmarkService.deleteBookmark(id)
+        return ResponseEntity.noContent().build()
     }
 }
 

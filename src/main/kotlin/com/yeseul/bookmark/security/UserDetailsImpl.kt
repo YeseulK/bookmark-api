@@ -22,4 +22,6 @@ class UserDetailsImpl(val member: Member): UserDetails {
     override fun isCredentialsNonExpired(): Boolean = enabled
 
     override fun isEnabled(): Boolean = enabled
+
+    fun getMemberId(): Long = member.id!!
 }

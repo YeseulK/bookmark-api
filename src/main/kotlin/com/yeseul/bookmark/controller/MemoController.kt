@@ -8,6 +8,7 @@ import com.yeseul.bookmark.service.MemoService
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -32,12 +33,13 @@ class MemoController(
     }
 
     @PostMapping
-    fun postMemo(@RequestBody body: CreateMemoDto) {
-        memoService.createMemo(body)
+    fun postMemo(@RequestBody body: CreateMemoDto): ResponseEntity<Unit> {
+        return ResponseEntity.status(HttpStatus.CREATED).body(memoService.createMemo(body))
     }
 
     @DeleteMapping("/{id}")
-    fun deleteMemo(@PathVariable id: Long) {
+    fun deleteMemo(@PathVariable id: Long): ResponseEntity<Any> {
         memoService.deleteMemo(id)
+        return ResponseEntity.noContent().build()
     }
 }

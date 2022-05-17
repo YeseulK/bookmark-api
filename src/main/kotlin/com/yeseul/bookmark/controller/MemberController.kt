@@ -4,6 +4,7 @@ import com.yeseul.bookmark.controller.dto.request.RequestMemberDto
 import com.yeseul.bookmark.controller.dto.response.MemberDto
 import com.yeseul.bookmark.response.ApiResponse
 import com.yeseul.bookmark.service.MemberService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -15,7 +16,7 @@ class MemberController(
 
     @PostMapping("/signup")
     fun signup(@RequestBody body: RequestMemberDto): ResponseEntity<Unit> {
-        return ResponseEntity.status(201).body(memberService.signup(body))
+        return ResponseEntity.status(HttpStatus.CREATED).body(memberService.signup(body))
     }
 
     @PostMapping("/login")
@@ -25,9 +26,7 @@ class MemberController(
 
     @GetMapping
     fun getMembers(): ResponseEntity<ApiResponse<List<MemberDto>>> {
-        val result = memberService.findMembers()
-        val response = ApiResponse(result)
-        return ResponseEntity.ok(response)
+        return ResponseEntity.ok(ApiResponse(memberService.findMembers()))
     }
     @GetMapping("/{id}")
     fun getMember(@PathVariable id: Long): ResponseEntity<ApiResponse<MemberDto>> {
@@ -37,12 +36,13 @@ class MemberController(
     @PutMapping("/{id}")
     fun putMember(
         @PathVariable id: Long,
-        @RequestBody body: RequestMemberDto) {
-        memberService.updateMember(id, body)
+        @RequestBody body: RequestMemberDto): ResponseEntity<Unit> {
+        return ResponseEntity.ok().body(memberService.updateMember(id, body))
     }
 
     @DeleteMapping("/{id}")
-    fun deleteMember(@PathVariable id: Long) {
+    fun deleteMember(@PathVariable id: Long): ResponseEntity<Any> {
         memberService.deleteMember(id)
+        return ResponseEntity.noContent().build()
     }
 }

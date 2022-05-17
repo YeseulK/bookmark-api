@@ -16,9 +16,9 @@ class FolderService(
     val mapper: ModelMapper,
 ) {
 
-    fun findFolders(username: String): List<FolderDto> {
-        val member = memberRepository.findByUsername(username)
-        val entities = member.folders
+    fun findFolders(userId: Long): List<FolderDto> {
+        val member = memberRepository.findById(userId)
+        val entities = member.get().folders
         return entities.toList().map { mapper.map(it, FolderDto::class.java) }
     }
 
@@ -27,13 +27,14 @@ class FolderService(
         return mapper.map(entity, FolderAndBookmarksDto::class.java)
     }
 
-    fun createFolder(username: String, dto: CreateFolderDto) {
-        val member = memberRepository.findByUsername(username)
+    fun createFolder(userId: Long, dto: CreateFolderDto): FolderDto {
+        val member = memberRepository.findById(userId)
         val entity = Folder(
             name = dto.name,
-            member = member
+            member = member.get()
         )
-        folderRepository.save(entity)
+        val created = folderRepository.save(entity)
+        return mapper.map(created, FolderDto::class.java)
     }
 
     fun deleteFolder(id: Long) {
