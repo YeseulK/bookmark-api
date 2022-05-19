@@ -12,4 +12,3 @@ class ExternalService {
     @Value("\${external.secret-key}")
     var secretKey: String? = null
 }
-

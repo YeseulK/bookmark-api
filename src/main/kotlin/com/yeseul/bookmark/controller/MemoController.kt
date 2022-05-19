@@ -6,6 +6,7 @@ import com.yeseul.bookmark.controller.dto.response.MemoDto
 import com.yeseul.bookmark.response.ApiPageMeta
 import com.yeseul.bookmark.response.ApiResponse
 import com.yeseul.bookmark.service.MemoService
+import io.swagger.annotations.ApiOperation
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
@@ -19,6 +20,7 @@ class MemoController(
     private val memoService: MemoService
 ) {
 
+    @ApiOperation(value = "북마크 메모 리스트 조회")
     @GetMapping
     fun getMemos(
         @PageableDefault(page = 0, size = 20, sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable
@@ -28,16 +30,19 @@ class MemoController(
         return ResponseEntity.ok(response)
     }
 
+    @ApiOperation(value = "북마크 메모 조회")
     @GetMapping("/{id}")
     fun getMemo(@PathVariable id: Long): ResponseEntity<ApiResponse<MemoDto>> {
         return ResponseEntity.ok(ApiResponse(memoService.findMemo(id)))
     }
 
+    @ApiOperation(value = "북마크 메모 생성")
     @PostMapping
     fun postMemo(@RequestBody body: CreateMemoDto): ResponseEntity<Unit> {
         return ResponseEntity.status(HttpStatus.CREATED).body(memoService.createMemo(body))
     }
 
+    @ApiOperation(value = "북마크 메모 수정")
     @PatchMapping("/{id}")
     fun patchMemo(
         @PathVariable id: Long,
@@ -47,6 +52,7 @@ class MemoController(
         return ResponseEntity.ok(ApiResponse(result))
     }
 
+    @ApiOperation(value = "북마크 메모 삭제")
     @DeleteMapping("/{id}")
     fun deleteMemo(@PathVariable id: Long): ResponseEntity<Any> {
         memoService.deleteMemo(id)

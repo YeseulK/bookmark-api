@@ -7,6 +7,7 @@ import com.yeseul.bookmark.controller.dto.response.FolderDto
 import com.yeseul.bookmark.response.ApiResponse
 import com.yeseul.bookmark.security.UserDetailsImpl
 import com.yeseul.bookmark.service.FolderService
+import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -18,6 +19,7 @@ class FolderController(
     private val folderService: FolderService
 ) {
 
+    @ApiOperation(value = "폴더 리스트 조회")
     @GetMapping
     fun getFolders(
         @AuthenticationPrincipal userDetailsImpl: UserDetailsImpl
@@ -26,11 +28,13 @@ class FolderController(
         return ResponseEntity.ok(ApiResponse(result))
     }
 
+    @ApiOperation(value = "폴더 조회")
     @GetMapping("/{id}")
     fun getFolder(@PathVariable id: Long): ResponseEntity<ApiResponse<FolderAndBookmarksDto>> {
         return ResponseEntity.ok(ApiResponse(folderService.findFolder(id)))
     }
 
+    @ApiOperation(value = "폴더 생성")
     @PostMapping
     fun postFolder(
         @AuthenticationPrincipal userDetailsImpl: UserDetailsImpl,
@@ -41,6 +45,7 @@ class FolderController(
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse(result))
     }
 
+    @ApiOperation(value = "폴더 이름 변경")
     @PatchMapping("/{id}")
     fun patchFolder(
         @PathVariable id: Long,
@@ -50,6 +55,7 @@ class FolderController(
         return ResponseEntity.ok(ApiResponse(result))
     }
 
+    @ApiOperation(value = "폴더 삭제")
     @DeleteMapping("/{id}")
     fun deleteFolder(@PathVariable id: Long): ResponseEntity<Any> { // TODO:
         folderService.deleteFolder(id)
