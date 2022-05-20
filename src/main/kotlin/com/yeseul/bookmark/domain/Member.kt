@@ -23,8 +23,7 @@ class Member (
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     val folders: MutableList<Folder> = arrayListOf()
 
-    fun updateMember(username: String, password: String) {
-        this.username = username
+    fun updateMemberPassword(password: String) {
         this.password = password
     }
 }

@@ -14,7 +14,7 @@ class UserDetailsServiceImpl(
 
     override fun loadUserByUsername(username: String): UserDetails {
         val member: Member = memberRepository.findByUsername(username)
-            ?: throw UsernameNotFoundException("존재하지 않는 username 입니다.")
+            ?: throw UsernameNotFoundException("존재하지 않는 사용자입니다.")
 
         return UserDetailsImpl(member)
     }

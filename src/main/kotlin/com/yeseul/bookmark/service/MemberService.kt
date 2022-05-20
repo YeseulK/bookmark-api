@@ -1,6 +1,7 @@
 package com.yeseul.bookmark.service
 
-import com.yeseul.bookmark.controller.dto.request.RequestMemberDto
+import com.yeseul.bookmark.controller.dto.request.ChangeMemberPasswordDto
+import com.yeseul.bookmark.controller.dto.request.CreateMemberDto
 import com.yeseul.bookmark.controller.dto.response.MemberDto
 import com.yeseul.bookmark.domain.Member
 import com.yeseul.bookmark.security.JwtUtils
@@ -24,23 +25,28 @@ class MemberService(
 ) {
 
     @Transactional
-    fun signup(dto: RequestMemberDto) {
-        dto.password = passwordEncoder.encode(dto.password)
-        val entity = mapper.map(dto, Member::class.java)
-        memberRepository.save(entity)
+    fun signup(dto: CreateMemberDto) {
+        var member = memberRepository.findByUsername(dto.email)
+        if (member == null) {
+            dto.password = passwordEncoder.encode(dto.password)
+            member = Member(dto.email, dto.password)
+            memberRepository.save(member)
+        } else {
+            throw IllegalArgumentException("이미 존재하는 사용자 입니다.")
+        }
     }
 
     @Transactional(readOnly = true)
-    fun login(dto: RequestMemberDto): String {
+    fun login(dto: CreateMemberDto): String {
         try {
             // 인증시도
             authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(dto.username, dto.password, null)
+                UsernamePasswordAuthenticationToken(dto.email, dto.password, null)
             )
         } catch (e: BadCredentialsException) {
             throw BadCredentialsException("로그인 실패")
         }
-        return jwtUtils.createToken(dto.username)
+        return jwtUtils.createToken(dto.email)
     }
 
     fun findMembers(): List<MemberDto> {
@@ -53,10 +59,11 @@ class MemberService(
         return mapper.map(entity, MemberDto::class.java)
     }
 
-    fun updateMember(id: Long, dto: RequestMemberDto) {
+    fun updateMemberPassword(id: Long, dto: ChangeMemberPasswordDto) {
         val member: Member = memberRepository.findByIdOrNull(id)
-            ?: throw IllegalArgumentException("존재하지 않는 ID 입니다.")
-        member.updateMember(dto.username, dto.password)
+            ?: throw IllegalArgumentException("존재하지 않는 사용자 입니다.")
+        dto.password = passwordEncoder.encode(dto.password)
+        member.updateMemberPassword(dto.password)
         memberRepository.save(member)
     }
 

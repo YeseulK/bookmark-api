@@ -1,6 +1,7 @@
 package com.yeseul.bookmark.controller
 
-import com.yeseul.bookmark.controller.dto.request.RequestMemberDto
+import com.yeseul.bookmark.controller.dto.request.ChangeMemberPasswordDto
+import com.yeseul.bookmark.controller.dto.request.CreateMemberDto
 import com.yeseul.bookmark.controller.dto.response.MemberDto
 import com.yeseul.bookmark.response.ApiResponse
 import com.yeseul.bookmark.service.MemberService
@@ -17,13 +18,13 @@ class MemberController(
 
     @ApiOperation(value = "회원가입")
     @PostMapping("/signup")
-    fun signup(@RequestBody body: RequestMemberDto): ResponseEntity<Unit> {
+    fun signup(@RequestBody body: CreateMemberDto): ResponseEntity<Unit> {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.signup(body))
     }
 
     @ApiOperation(value = "로그인")
     @PostMapping("/login")
-    fun login(@RequestBody body: RequestMemberDto): ResponseEntity<String> {
+    fun login(@RequestBody body: CreateMemberDto): ResponseEntity<String> {
         return ResponseEntity.ok().body(memberService.login(body))
     }
 
@@ -39,12 +40,13 @@ class MemberController(
         return ResponseEntity.ok(ApiResponse(memberService.findMember(id)))
     }
 
-    @ApiOperation(value = "사용자 수정")
-    @PutMapping("/{id}")
-    fun putMember(
+    @ApiOperation(value = "사용자 비밀번호 변경")
+    @PatchMapping("/{id}")
+    fun patchMember(
         @PathVariable id: Long,
-        @RequestBody body: RequestMemberDto): ResponseEntity<Unit> {
-        return ResponseEntity.ok().body(memberService.updateMember(id, body))
+        @RequestBody body: ChangeMemberPasswordDto
+    ): ResponseEntity<Unit> {
+        return ResponseEntity.ok().body(memberService.updateMemberPassword(id, body))
     }
 
     @ApiOperation(value = "사용자 삭제")

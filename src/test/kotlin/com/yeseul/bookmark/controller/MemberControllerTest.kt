@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.yeseul.bookmark.controller.dto.request.RequestMemberDto
+import com.yeseul.bookmark.controller.dto.request.CreateMemberDto
 import com.yeseul.bookmark.domain.Member
 import com.yeseul.bookmark.repository.MemberRepository
 import org.junit.jupiter.api.BeforeAll
@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.*
 @Transactional
 @AutoConfigureMockMvc
 @SpringBootTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS) // BeforeAll
+@TestInstance(TestInstance.Lifecycle.PER_CLASS) // Before All
 class MemberControllerTest {
 
     @Autowired lateinit var mockMvc: MockMvc
@@ -38,7 +38,7 @@ class MemberControllerTest {
     @DisplayName("회원가입 테스트")
     fun `회원가입`() {
 
-        val memberDto = RequestMemberDto("saveUsername", "savePassword")
+        val memberDto = CreateMemberDto("saveUsername", "savePassword")
         val memberDtoJson = objectMapper.writeValueAsString(memberDto)
 
         mockMvc.post("/v1/members/signup")
@@ -54,7 +54,7 @@ class MemberControllerTest {
     @DisplayName("로그인 테스트")
     fun `로그인 테스트`() {
 
-        val loginDto = RequestMemberDto("test101", "test101")
+        val loginDto = CreateMemberDto("test101", "test101")
         val loginDtoJson = objectMapper.writeValueAsString(loginDto)
 
         mockMvc.post("/v1/members/login")
