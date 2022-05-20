@@ -13,7 +13,7 @@ class UserDetailsImpl(val member: Member): UserDetails {
 
     override fun getPassword(): String = member.password
 
-    override fun getUsername(): String = member.username
+    override fun getUsername(): String = member.email
 
     override fun isAccountNonExpired(): Boolean = enabled
 

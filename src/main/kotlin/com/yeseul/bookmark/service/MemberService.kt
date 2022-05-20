@@ -35,12 +35,12 @@ class MemberService(
         try {
             // 인증시도
             authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(dto.username, dto.password, null)
+                UsernamePasswordAuthenticationToken(dto.email, dto.password, null)
             )
         } catch (e: BadCredentialsException) {
             throw BadCredentialsException("로그인 실패")
         }
-        return jwtUtils.createToken(dto.username)
+        return jwtUtils.createToken(dto.email)
     }
 
     fun findMembers(): List<MemberDto> {
@@ -56,7 +56,7 @@ class MemberService(
     fun updateMember(id: Long, dto: RequestMemberDto) {
         val member: Member = memberRepository.findByIdOrNull(id)
             ?: throw IllegalArgumentException("존재하지 않는 ID 입니다.")
-        member.updateMember(dto.username, dto.password)
+        member.updateMember(dto.email, dto.password)
         memberRepository.save(member)
     }
 

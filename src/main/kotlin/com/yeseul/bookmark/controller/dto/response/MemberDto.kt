@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 data class MemberDto @JvmOverloads constructor(
     val id: Long? = null,
-    val username: String? = null,
+    val email: String? = null,
     val password: String? = null,
     val createdAt: LocalDateTime? = null,
     val updatedAt: LocalDateTime? = null
