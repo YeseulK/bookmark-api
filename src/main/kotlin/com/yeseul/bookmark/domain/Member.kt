@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 class Member (
-    email: String,
+    username: String,
     password: String,
 ): BaseTime() {
     @Id
@@ -13,7 +13,7 @@ class Member (
     var id: Long? = null
 
     @Column(nullable = false, unique = true)
-    var email: String = email
+    var username: String = username
         protected set
 
     @Column(nullable = false)
@@ -24,7 +24,7 @@ class Member (
     val folders: MutableList<Folder> = arrayListOf()
 
     fun updateMember(username: String, password: String) {
-        this.email = username
+        this.username = username
         this.password = password
     }
 }

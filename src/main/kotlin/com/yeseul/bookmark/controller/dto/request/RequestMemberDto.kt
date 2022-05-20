@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull
 data class RequestMemberDto(
     @field: NotNull
     @field: Length(max = 100)
-    val email: String,
+    val username: String,
 
     @field: NotNull
     @field: Length(max = 100)
