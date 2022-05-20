@@ -1,5 +1,7 @@
-package com.yeseul.bookmark.security
+package com.yeseul.bookmark.config
 
+import com.yeseul.bookmark.security.JwtFilter
+import com.yeseul.bookmark.security.UserDetailsServiceImpl
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -32,7 +34,7 @@ class WebSecurityConfig(
         http.csrf().disable()
 
         http.authorizeRequests()
-            .antMatchers("/v1/members/signup", "/v1/members/login", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs").permitAll()
+            .antMatchers("/", "/v1/members/signup", "/v1/members/login", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs").permitAll()
             .anyRequest().authenticated()
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
