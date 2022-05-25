@@ -6,7 +6,7 @@ import com.yeseul.bookmark.domain.Bookmark
 import com.yeseul.bookmark.domain.Folder
 import com.yeseul.bookmark.repository.BookmarkRepository
 import com.yeseul.bookmark.repository.FolderRepository
-import com.yeseul.bookmark.repository.MemberRepository
+import com.yeseul.bookmark.repository.UserRepository
 import com.yeseul.bookmark.utils.DataWithTotal
 import org.modelmapper.ModelMapper
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 @Service
 class BookmarkService(
     val bookmarkRepository: BookmarkRepository,
-    val memberRepository: MemberRepository,
+    val userRepository: UserRepository,
     val folderRepository: FolderRepository,
     val mapper: ModelMapper
 ) {
@@ -35,10 +35,10 @@ class BookmarkService(
     }
 
     fun createBookmark(userId: Long, folderId: Long, dto: CreateBookmarkDto): BookmarkDto {
-        val member = memberRepository.findById(userId)
+        val user = userRepository.findById(userId)
         val entity = Bookmark(
             url = dto.url,
-            folder = Folder(id = folderId, member = member.get())
+            folder = Folder(id = folderId, user = user.get())
         )
         val created = bookmarkRepository.save(entity)
         return mapper.map(created, BookmarkDto::class.java)

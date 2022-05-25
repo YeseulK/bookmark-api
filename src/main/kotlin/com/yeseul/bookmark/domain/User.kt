@@ -4,7 +4,7 @@ import com.yeseul.bookmark.utils.BaseTime
 import javax.persistence.*
 
 @Entity
-class Member (
+class User (
     username: String,
     password: String,
 ): BaseTime() {
@@ -20,10 +20,10 @@ class Member (
     var password: String = password
         protected set
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     val folders: MutableList<Folder> = arrayListOf()
 
-    fun updateMemberPassword(password: String) {
+    fun updateUserPassword(password: String) {
         this.password = password
     }
 }

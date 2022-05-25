@@ -15,7 +15,7 @@ data class Folder(
     var bookmarks: MutableList<Bookmark> = arrayListOf(),
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
-    var member: Member
+    @JoinColumn(name = "user_id")
+    var user: User
 
 ): BaseTime()

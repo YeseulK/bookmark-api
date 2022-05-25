@@ -34,7 +34,7 @@ class WebSecurityConfig(
         http.csrf().disable()
 
         http.authorizeRequests()
-            .antMatchers("/", "/v1/members/signup", "/v1/members/login", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs").permitAll()
+            .antMatchers("/", "/v1/users/signup", "/v1/users/login", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs").permitAll()
             .anyRequest().authenticated()
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

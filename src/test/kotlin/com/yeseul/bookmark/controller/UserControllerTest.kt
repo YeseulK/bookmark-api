@@ -7,9 +7,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.yeseul.bookmark.controller.dto.request.CreateMemberDto
-import com.yeseul.bookmark.domain.Member
-import com.yeseul.bookmark.repository.MemberRepository
+import com.yeseul.bookmark.controller.dto.request.CreateUserDto
+import com.yeseul.bookmark.domain.User
+import com.yeseul.bookmark.repository.UserRepository
 import org.junit.jupiter.api.BeforeAll
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -20,31 +20,31 @@ import org.springframework.test.web.servlet.*
 @AutoConfigureMockMvc
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS) // Before All
-class MemberControllerTest {
+class UserControllerTest {
 
     @Autowired lateinit var mockMvc: MockMvc
-    @Autowired lateinit var memberRepository: MemberRepository
+    @Autowired lateinit var userRepository: UserRepository
     @Autowired lateinit var objectMapper: ObjectMapper
     @Autowired lateinit var passwordEncoder: PasswordEncoder
-    lateinit var testMember: Member
+    lateinit var testUser: User
 
     @BeforeAll
     fun beforeAll() {
-        testMember = Member("test101", passwordEncoder.encode("test101"))
-        memberRepository.save(testMember)
+        testUser = User("test101", passwordEncoder.encode("test101"))
+        userRepository.save(testUser)
     }
 
     @Test
     @DisplayName("회원가입 테스트")
     fun `회원가입`() {
 
-        val memberDto = CreateMemberDto("saveUsername", "savePassword")
-        val memberDtoJson = objectMapper.writeValueAsString(memberDto)
+        val userDto = CreateUserDto("saveUsername", "savePassword")
+        val userDtoJson = objectMapper.writeValueAsString(userDto)
 
-        mockMvc.post("/v1/members/signup")
+        mockMvc.post("/v1/users/signup")
         {
             contentType = MediaType.APPLICATION_JSON
-            content = memberDtoJson
+            content = userDtoJson
         }.andExpect {
             status { isCreated() }
         }.andDo { print() }
@@ -54,10 +54,10 @@ class MemberControllerTest {
     @DisplayName("로그인 테스트")
     fun `로그인 테스트`() {
 
-        val loginDto = CreateMemberDto("test101", "test101")
+        val loginDto = CreateUserDto("test101", "test101")
         val loginDtoJson = objectMapper.writeValueAsString(loginDto)
 
-        mockMvc.post("/v1/members/login")
+        mockMvc.post("/v1/users/login")
         {
             contentType = MediaType.APPLICATION_JSON
             content = loginDtoJson

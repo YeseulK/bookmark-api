@@ -48,7 +48,7 @@ class BookmarkController(
         @PathVariable folderId: String,
         @RequestBody body: CreateBookmarkDto
     ): ResponseEntity<ApiResponse<BookmarkDto>> {
-        val userId = userDetailsImpl.getMemberId()
+        val userId = userDetailsImpl.getUserId()
         val result = bookmarkService.createBookmark(userId, folderId.toLong(), body)
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse(result))
     }

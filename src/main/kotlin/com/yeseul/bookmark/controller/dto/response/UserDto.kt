@@ -3,7 +3,7 @@ package com.yeseul.bookmark.controller.dto.response
 import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDateTime
 
-data class MemberDto @JvmOverloads constructor(
+data class UserDto @JvmOverloads constructor(
     val id: Long? = null,
     val username: String? = null,
     val password: String? = null,

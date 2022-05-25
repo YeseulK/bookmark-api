@@ -24,7 +24,7 @@ class FolderController(
     fun getFolders(
         @AuthenticationPrincipal userDetailsImpl: UserDetailsImpl
     ): ResponseEntity<ApiResponse<List<FolderDto>>> {
-        val result = folderService.findFolders(userDetailsImpl.getMemberId())
+        val result = folderService.findFolders(userDetailsImpl.getUserId())
         return ResponseEntity.ok(ApiResponse(result))
     }
 
@@ -40,7 +40,7 @@ class FolderController(
         @AuthenticationPrincipal userDetailsImpl: UserDetailsImpl,
         @RequestBody body: CreateFolderDto
     ): ResponseEntity<ApiResponse<FolderDto>> {
-        val userId = userDetailsImpl.getMemberId()
+        val userId = userDetailsImpl.getUserId()
         val result = folderService.createFolder(userId, body)
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse(result))
     }

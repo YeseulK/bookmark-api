@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.Length
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 
-data class CreateMemberDto(
+data class CreateUserDto(
     @field: NotBlank
     @field: Email
     val email: String,
